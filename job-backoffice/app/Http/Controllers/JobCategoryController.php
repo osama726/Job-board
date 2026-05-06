@@ -11,9 +11,17 @@ class JobCategoryController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $categories = JobCategory::latest()->paginate(5)->onEachSide(2);
+        $query = JobCategory::latest();
+
+        if($request->input('archived') == true) {
+            $query->onlyTrashed();
+        }
+
+        $categories = $query->paginate(5)->onEachSide(2);
+
+
         return view('job-category.index', ['categories' => $categories]);
     }
 
@@ -55,7 +63,9 @@ class JobCategoryController extends Controller
      */
     public function update(JobCategoryRequest $request, JobCategory $JobCategory)
     {
-        $JobCategory->update($request->validated());
+        $request->validated();
+        $JobCategory->name = $request->input('name');
+        $JobCategory->save();
         return to_route('job-categories.index')->with('success', 'Job category updated successfully.');
     }
 
@@ -66,5 +76,23 @@ class JobCategoryController extends Controller
     {
         $JobCategory->delete();
         return to_route('job-categories.index')->with('success', 'Job category deleted successfully.');
+    }
+
+    /**
+        * Force delete the specified resource from storage.
+    */
+    public function forceDelete(JobCategory $JobCategory)
+    {
+        $JobCategory->restore();
+        return to_route('job-categories.index', ['archived' => true])->with('success', 'Job category restored successfully.');
+    }
+
+    /**
+        * Restore the specified resource from storage.
+    */
+    public function restore(JobCategory $JobCategory)
+    {
+        $JobCategory->forceDelete();
+        return to_route('job-categories.index', ['archived' => true])->with('success', 'Job category Destroyed successfully.');
     }
 }

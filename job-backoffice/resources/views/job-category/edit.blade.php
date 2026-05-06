@@ -1,12 +1,11 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Edit your Category') }}
+            {{ __('Edit job Category') }}
         </h2>
     </x-slot>
 
     <div class="max-w-2xl mx-auto mt-10 bg-white shadow-md rounded-xl p-8">
-
 
         <div>
             <p class="text-2xl font-bold text-gray-800">
@@ -28,7 +27,7 @@
                     name="name"
                     value="{{ old('name', $category->name) }}"
                     placeholder="Enter category name"
-                    class="w-full rounded-lg border border-gray-300 px-4 py-3 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 outline-none transition"
+                    class="{{ $errors->has('name') ? 'outline-red-500 outline outline-1' : '' }} w-full rounded-lg border border-gray-300 px-4 py-3 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 outline-none transition"
                 >
 
                 @error('name')

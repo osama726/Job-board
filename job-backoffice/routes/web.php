@@ -15,7 +15,15 @@ Route::middleware('auth')->group(function () {
     Route::resource('/Companies', CompanyController::class);
     Route::resource('/job-applications', JobApplicationController::class);
 
-    Route::resource('/job-categories', JobCategoryController::class);
+    // Job Categories routes
+    Route::resource('/job-categories', JobCategoryController::class)
+    ->except('show');
+    Route::put('/job-categories/{JobCategory}/restore', [JobCategoryController::class, 'restore'])
+    ->name('job-categories.restore')
+    ->withTrashed();
+    Route::delete('/job-categories/{JobCategory}/force-delete', [JobCategoryController::class, 'forceDelete'])
+    ->name('job-categories.force-delete')
+    ->withTrashed();
 
     Route::resource('/job-vacancies', JobVacancyController::class);
     Route::resource('/users', UserController::class);
