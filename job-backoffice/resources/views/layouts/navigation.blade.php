@@ -13,7 +13,7 @@
             {{ __('Dashboard') }}
         </x-nav-link>
 
-        <x-nav-link :href="route('Companies.index')" :active="request()->routeIs('Companies.index')">
+        <x-nav-link :href="route('companies.index')" :active="request()->routeIs('companies.index')">
             {{ __('Companies') }}
         </x-nav-link>
 
@@ -21,7 +21,7 @@
             {{ __('Job Applications') }}
         </x-nav-link>
         <x-nav-link :href="route('job-categories.index')" :active="request()->routeIs('job-categories.index')">
-            {{ __('Vob Categories') }}
+            {{ __('Job Categories') }}
         </x-nav-link>
         <x-nav-link :href="route('job-vacancies.index')" :active="request()->routeIs('job-vacancies.index')">
             {{ __('Job Vacancies') }}

@@ -11,7 +11,7 @@
             </div>
         @endif
 
-        @if(session('fail'))
+        @if(session('error'))
             <div class="flex justify-center gap-3 text-red-700 bg-red-100 border border-red-400 px-4 py-3 rounded-2xl shadow-lg relative"
                 x-data="{ show: true }"
                 x-show="show"
@@ -19,7 +19,7 @@
                 x-init="setTimeout(() => show = false, 3000)"
                 role="alert"
             >
-                {{ session('fail') }}
+                {{ session('error') }}
             </div>
         @endif
     </div>

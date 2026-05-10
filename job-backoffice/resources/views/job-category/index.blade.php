@@ -10,21 +10,21 @@
 
 
     <div class="overflow-x-auto p-6">
-        
+
         <div class="flex justify-end space-x-2">
             @if (request()->input('archived') == true)
                 {{-- Active categories button --}}
                 <a class="inline-flex items-center gap-2 px-5 py-2.5 bg-black hover:bg-gray-800 text-white font-semibold rounded-xl shadow-md hover:shadow-lg transition-all"
                     href="{{ route('job-categories.index') }}">
                     <i class="bi bi-folder2-open"></i>
-                    Your active categories
+                    Active categories
                 </a>
             @else
                 {{-- Archived categories button --}}
                 <a class="inline-flex items-center gap-2 px-5 py-2.5 bg-black hover:bg-gray-800 text-white font-semibold rounded-xl shadow-md hover:shadow-lg transition-all"
                     href="{{ route('job-categories.index', ['archived' => true]) }}">
                     <i class="bi bi-file-earmark-zip"></i>
-                    Your archived categories
+                    Archived categories
                 </a>
             @endif
 
@@ -47,12 +47,12 @@
             <tbody>
                 @forelse ($categories as $category)
                     <tr class="border-b">
-                        <td class="px-6 py-4 text-gray-800">{{$category['name']}}</td>
+                        <td class="px-6 py-4 text-gray-800">{{$category->name}}</td>
                         <td>
                             {{-- Action buttons (Destroy and Restore) --}}
                             @if (request()->input('archived') == true)
                                 <div class="flex space-x-4">
-                                    {{-- Edit button --}}
+                                    {{-- Restore button --}}
                                     <form action="{{ route('job-categories.restore', $category->id) }}" method="POST" class="inline-block">
                                         @csrf
                                         @method('PUT')

@@ -43,14 +43,6 @@ class JobCategoryController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
      * Show the form for editing the specified resource.
      */
     public function edit(JobCategory $JobCategory)
@@ -83,8 +75,8 @@ class JobCategoryController extends Controller
     */
     public function forceDelete(JobCategory $JobCategory)
     {
-        $JobCategory->restore();
-        return to_route('job-categories.index', ['archived' => true])->with('success', 'Job category restored successfully.');
+        $JobCategory->forceDelete();
+        return to_route('job-categories.index', ['archived' => true])->with('success', 'Job category Destroyed successfully.');
     }
 
     /**
@@ -92,7 +84,7 @@ class JobCategoryController extends Controller
     */
     public function restore(JobCategory $JobCategory)
     {
-        $JobCategory->forceDelete();
-        return to_route('job-categories.index', ['archived' => true])->with('success', 'Job category Destroyed successfully.');
+        $JobCategory->restore();
+        return to_route('job-categories.index', ['archived' => true])->with('success', 'Job category restored successfully.');
     }
 }

@@ -12,8 +12,6 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth')->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
-    Route::resource('/Companies', CompanyController::class);
-    Route::resource('/job-applications', JobApplicationController::class);
 
     // Job Categories routes
     Route::resource('/job-categories', JobCategoryController::class)
@@ -24,6 +22,18 @@ Route::middleware('auth')->group(function () {
     Route::delete('/job-categories/{JobCategory}/force-delete', [JobCategoryController::class, 'forceDelete'])
     ->name('job-categories.force-delete')
     ->withTrashed();
+
+    // Job Company routes
+    Route::resource('/companies', CompanyController::class);
+    Route::put('/companies/{company}/restore', [CompanyController::class, 'restore'])
+    ->name('companies.restore')
+    ->withTrashed();
+    Route::delete('/companies/{company}/force-delete', [CompanyController::class, 'forceDelete'])
+    ->name('companies.force-delete')
+    ->withTrashed();
+
+    Route::resource('/job-applications', JobApplicationController::class);
+
 
     Route::resource('/job-vacancies', JobVacancyController::class);
     Route::resource('/users', UserController::class);
