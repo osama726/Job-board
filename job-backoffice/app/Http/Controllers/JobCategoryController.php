@@ -45,46 +45,46 @@ class JobCategoryController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(JobCategory $JobCategory)
+    public function edit(JobCategory $jobCategory)
     {
-        return view('job-category.edit', ['category' => $JobCategory ]);
+        return view('job-category.edit', ['category' => $jobCategory ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(JobCategoryRequest $request, JobCategory $JobCategory)
+    public function update(JobCategoryRequest $request, JobCategory $jobCategory)
     {
         $request->validated();
-        $JobCategory->name = $request->input('name');
-        $JobCategory->save();
+        $jobCategory->name = $request->input('name');
+        $jobCategory->save();
         return to_route('job-categories.index')->with('success', 'Job category updated successfully.');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(JobCategory $JobCategory)
+    public function destroy(JobCategory $jobCategory)
     {
-        $JobCategory->delete();
+        $jobCategory->delete();
         return to_route('job-categories.index')->with('success', 'Job category deleted successfully.');
     }
 
     /**
         * Force delete the specified resource from storage.
     */
-    public function forceDelete(JobCategory $JobCategory)
+    public function forceDelete(JobCategory $jobCategory)
     {
-        $JobCategory->forceDelete();
+        $jobCategory->forceDelete();
         return to_route('job-categories.index', ['archived' => true])->with('success', 'Job category Destroyed successfully.');
     }
 
     /**
         * Restore the specified resource from storage.
     */
-    public function restore(JobCategory $JobCategory)
+    public function restore(JobCategory $jobCategory)
     {
-        $JobCategory->restore();
+        $jobCategory->restore();
         return to_route('job-categories.index', ['archived' => true])->with('success', 'Job category restored successfully.');
     }
 }

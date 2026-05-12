@@ -16,14 +16,14 @@ Route::middleware('auth')->group(function () {
     // Job Categories routes
     Route::resource('/job-categories', JobCategoryController::class)
     ->except('show');
-    Route::put('/job-categories/{JobCategory}/restore', [JobCategoryController::class, 'restore'])
+    Route::put('/job-categories/{job_category}/restore', [JobCategoryController::class, 'restore'])
     ->name('job-categories.restore')
     ->withTrashed();
-    Route::delete('/job-categories/{JobCategory}/force-delete', [JobCategoryController::class, 'forceDelete'])
+    Route::delete('/job-categories/{job_category}/force-delete', [JobCategoryController::class, 'forceDelete'])
     ->name('job-categories.force-delete')
     ->withTrashed();
 
-    // Job Company routes
+    // Job Companies routes
     Route::resource('/companies', CompanyController::class);
     Route::put('/companies/{company}/restore', [CompanyController::class, 'restore'])
     ->name('companies.restore')
@@ -32,10 +32,17 @@ Route::middleware('auth')->group(function () {
     ->name('companies.force-delete')
     ->withTrashed();
 
-    Route::resource('/job-applications', JobApplicationController::class);
-
-
+    // Job jobVacancies routes
     Route::resource('/job-vacancies', JobVacancyController::class);
+    Route::put('/job-vacancies/{job_vacancy}/restoore', [JobVacancyController::class, 'restore'])
+    ->name('job-vacancies.restore')
+    ->withTrashed();
+    Route::delete('/job-vacancies/{job_vacancy}/force-delete', [JobVacancyController::class, 'forceDelete'])
+    ->name('job-vacancies.force-delete')
+    ->withTrashed();
+
+
+    Route::resource('/job-applications', JobApplicationController::class);
     Route::resource('/users', UserController::class);
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

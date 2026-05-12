@@ -18,24 +18,58 @@
 
         <div class="w-full mx-auto p-6 bg-white rounded-lg shadow mt-4">
             {{-- Company Information --}}
-            <div>
-                <h3 class="text-lg font-bold">Company Information</h3>
-                <p><strong>Company owner:</strong> {{ $company->owner->name }}</p>
-                <p><strong>Company Name:</strong> {{ $company->name }}</p>
-                <p><strong>Industry:</strong> {{ $company->industry }}</p>
-                <p><strong>Address:</strong> {{ $company->address }}</p>
-                <p><strong>Website:</strong>
-                    @if ($company['website'])
-                        <a class="text-blue-500 hover:text-blue-700"
-                            target="_blank"
-                            href="{{$company->website}}">
-                                <i class="bi bi-link-45deg"></i>Link
-                        </a>
-                    @else
-                        undefined
-                    @endif
-                </p>
-            </div>
+<div class="bg-white p-6 rounded-xl">
+    <div class="flex items-center justify-between mb-6 border-b pb-4">
+        <h3 class="text-xl font-bold text-gray-800 flex items-center gap-2">
+            <i class="bi bi-building text-indigo-600"></i> Company Profile
+        </h3>
+    </div>
+
+    {{-- شبكة عرض البيانات --}}
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+        {{-- بطاقة المالك --}}
+        <div class="bg-indigo-50 p-4 rounded-lg border border-indigo-100">
+            <p class="text-xs text-indigo-500 uppercase font-bold tracking-wider mb-1">Company Owner</p>
+            <p class="text-gray-900 font-semibold flex items-center gap-2">
+                <i class="bi bi-person-circle"></i> {{ $company->owner->name }}
+            </p>
+        </div>
+
+        {{-- بطاقة اسم الشركة --}}
+        <div class="bg-gray-50 p-4 rounded-lg border border-gray-100">
+            <p class="text-xs text-gray-400 uppercase font-bold tracking-wider mb-1">Company Name</p>
+            <p class="text-gray-900 font-bold text-lg">{{ $company->name }}</p>
+        </div>
+
+        {{-- بطاقة المجال --}}
+        <div class="bg-gray-50 p-4 rounded-lg border border-gray-100">
+            <p class="text-xs text-gray-400 uppercase font-bold tracking-wider mb-1">Industry</p>
+            <p class="text-gray-900 font-semibold">{{ $company->industry }}</p>
+        </div>
+
+        {{-- بطاقة العنوان --}}
+        <div class="bg-gray-50 p-4 rounded-lg border border-gray-100 md:col-span-2">
+            <p class="text-xs text-gray-400 uppercase font-bold tracking-wider mb-1">Headquarters Address</p>
+            <p class="text-gray-900 flex items-center gap-2">
+                <i class="bi bi-geo-alt-fill text-red-400"></i> {{ $company->address }}
+            </p>
+        </div>
+
+        {{-- بطاقة الموقع الإلكتروني --}}
+        <div class="bg-gray-50 p-4 rounded-lg border border-gray-100">
+            <p class="text-xs text-gray-400 uppercase font-bold tracking-wider mb-1">Website</p>
+            @if ($company->website)
+                <a href="{{ $company->website }}" target="_blank" class="text-indigo-600 hover:text-indigo-800 font-medium flex items-center gap-2">
+                    <i class="bi bi-globe2"></i> Visit Official Site
+                </a>
+            @else
+                <span class="text-gray-400 italic">Not available</span>
+            @endif
+        </div>
+
+    </div>
+</div>
 
             {{-- Action buttons (Edit and Delete) --}}
             <div class="flex items-center gap-3 justify-end">

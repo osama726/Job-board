@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Company') }}
+            {{ __('Company') }} {{ request()->input('archived') ? '(Archived)' : '' }}
         </h2>
     </x-slot>
 
@@ -28,7 +28,7 @@
                 </a>
             @endif
 
-            {{-- (Add a new job category) Buttom --}}
+            {{-- (Add a new company) Buttom --}}
             <a class="inline-flex items-center gap-2 px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-xl shadow-md hover:shadow-lg transition-all"
                 href="{{ route('companies.create') }}">
                     <i class="bi bi-plus-circle"></i>
@@ -36,7 +36,7 @@
             </a>
         </div>
 
-        {{-- Job Category table --}}
+        {{-- company table --}}
         <table class="min-w-full divide-gray-200 rounded-lg shadow mt-4 bg-white">
             <thead>
                 <tr>
@@ -119,7 +119,7 @@
                 @empty
                     <tr>
                         <td colspan="5" class="px-6 py-4 text-center text-gray-500">
-                            No job company found.
+                            No companies found.
                         </td>
                     </tr>
                 @endforelse
