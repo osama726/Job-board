@@ -69,29 +69,29 @@
             {{-- Action buttons (Edit and Delete) --}}
             <div class="flex items-center gap-3 justify-end">
                 {{-- Edit button --}}
-                <a class="inline-flex items-center px-4 py-2 bg-indigo-100 text-indigo-700 rounded-lg hover:bg-indigo-100 transition-colors duration-200 text-sm font-medium"
+                <a class="inline-flex items-center px-4 py-2 bg-indigo-50 text-indigo-700 border border-indigo-100 rounded-lg hover:bg-indigo-100 transition shadow-sm text-sm font-medium"
                 href="{{ route('job-vacancies.edit', ['job_vacancy' => $jobVacancy->id, 'toList' => false ]) }}">
-                    <i class="bi bi-pencil-square"></i> Edit
+                    <i class="bi bi-pencil-square mr-2"></i> Edit
                 </a>
 
                 {{-- Delete button --}}
                 <form action="{{ route('job-vacancies.destroy', $jobVacancy->id) }}" method="POST" class="inline-block">
                     @csrf
                     @method('DELETE')
-                    <button class="inline-flex items-center px-4 py-2 bg-red-100 text-red-700  rounded-lg hover:bg-red-100 transition-colors duration-200 text-sm font-medium"
+                    <button class="inline-flex items-center px-4 py-2 bg-red-50 text-red-700 border border-red-100 rounded-lg hover:bg-red-100 transition shadow-sm text-sm font-medium"
                     type="submit">
-                        <i class="bi bi-trash3"></i> Archive
+                        <i class="bi bi-trash3 mr-2"></i> Archive
                     </button>
                 </form>
             </div>
 
             {{-- Navigation tabs --}}
-            <div class="mb-6">
-                <ul class="flex space-x-5">
+            <div class="border-b border-gray-200 mb-6">
+                <ul class="flex space-x-8">
                     <li>
                         <a href="{{ route('job-vacancies.show', $jobVacancy->id) }}"
-                            class="px-4 py-2 hover:text-gray-400 bg-gray-100 text-gray-700 border-b-2 border-blue-400  rounded-md">
-                            Applications
+                            class="pb-4 px-1 inline-flex items-center gap-2 text-sm font-medium transition-all text-indigo-600 border-b-2 border-indigo-600">
+                            <i class="bi bi-menu-up"></i> Applications
                         </a>
                     </li>
                 </ul>

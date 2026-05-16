@@ -1,17 +1,124 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Job-application') }}
+            {{ __('Job Application') }} {{ request()->input('archived') ? '(Archived)' : '' }}
         </h2>
     </x-slot>
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900">
-                    {{ __("Job-application page") }}
-                </div>
-            </div>
+    {{-- Success and error messages --}}
+    <x-toast-notification/>
+
+    <div class="overflow-x-auto p-6">
+
+        <div class="flex justify-end space-x-2">
+            @if (request()->input('archived') == true)
+                {{-- Active jobApplication button --}}
+                <a class="inline-flex items-center gap-2 px-5 py-2.5 bg-black hover:bg-gray-800 text-white font-semibold rounded-xl shadow-md hover:shadow-lg transition-all"
+                    href="{{ route('job-applications.index') }}">
+                    <i class="bi bi-folder2-open"></i>
+                    Active job application
+                </a>
+            @else
+                {{-- Archived jobApplication button --}}
+                <a class="inline-flex items-center gap-2 px-5 py-2.5 bg-black hover:bg-gray-800 text-white font-semibold rounded-xl shadow-md hover:shadow-lg transition-all"
+                    href="{{ route('job-applications.index', ['archived' => true]) }}">
+                    <i class="bi bi-file-earmark-zip"></i>
+                    Archived job application
+                </a>
+            @endif
+        </div>
+
+        {{-- Job jobApplication table --}}
+        <table class="min-w-full divide-gray-200 rounded-lg shadow mt-4 bg-white">
+            <thead>
+                <tr>
+                    <th class="px-6 py-3 text-left font-semibold text-gray-800">Applicant name</th> {{-- From users table --}}
+                    <th class="px-6 py-3 text-left font-semibold text-gray-800">Position ( Job vacancy )</th> {{-- From job_vacancies table --}}
+                    <th class="px-6 py-3 text-left font-semibold text-gray-800">Company</th> {{-- From companies table --}}
+                    <th class="px-6 py-3 text-left font-semibold text-gray-800">Status</th>
+                    <th class="px-6 py-3 text-left font-semibold text-gray-800">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @forelse ($jobApplications as $jobApplication)
+                    <tr class="border-b">
+                        <td class="px-6 py-4 text-gray-800">
+                            @if (request()->input('archived') == true)
+                                {{$jobApplication->user->name}}
+                            @else
+                                <a href="{{ route('job-applications.show', $jobApplication->id) }}" class="text-blue-500 hover:text-blue-700 font-bold">
+                                    {{$jobApplication->user->name}}
+                                </a>
+                            @endif
+                        </td>
+                        <td class="px-6 py-4 text-gray-800">{{$jobApplication->jobVacancy->title}}</td>
+                        <td class="px-6 py-4 text-gray-800">{{$jobApplication->company->name}}</td>
+                        @php
+                            $statusClasses = match($jobApplication->status) {
+                                'accepted' => 'text-green-600',
+                                'rejected' => 'text-red-600',
+                                'pending' => 'text-yellow-600',
+                                default => 'text-gray-600',
+                            };
+                        @endphp
+                        <td class="px-6 py-4 {{ $statusClasses }}">{{$jobApplication->status}}</td>
+                        <td>
+                            {{-- Action buttons (Destroy and Restore) --}}
+                            @if (request()->input('archived') == true)
+                                <div class="flex space-x-4">
+                                    {{-- Restore button --}}
+                                    <form action="{{ route('job-applications.restore', $jobApplication->id) }}" method="POST" class="inline-block">
+                                        @csrf
+                                        @method('PUT')
+                                        <button class="text-blue-500 hover:text-blue-700" type="submit">
+                                            <i class="bi bi-arrow-counterclockwise"></i>Restore
+                                        </button>
+                                    </form>
+
+                                    {{-- Destroy button --}}
+                                    <form action="{{ route('job-applications.force-delete', $jobApplication->id) }}" method="POST" class="inline-block">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button class="text-red-500 hover:text-red-700" type="submit">
+                                            <i class="bi bi-x-circle"></i>Destroy
+                                        </button>
+                                    </form>
+                                </div>
+                            @else
+                            {{-- Action buttons (Edit and Delete) --}}
+                                <div class="flex space-x-4">
+                                    {{-- Edit button --}}
+                                    <a class="text-blue-500 hover:text-blue-700"
+                                    href="{{ route('job-applications.edit', ['job_application' => $jobApplication->id, 'toList' => true ]) }}">
+                                        <i class="bi bi-pencil-square"></i>Edit
+                                    </a>
+
+                                    {{-- Delete button --}}
+                                    <form action="{{ route('job-applications.destroy', $jobApplication->id) }}" method="POST" class="inline-block">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button class="text-red-500 hover:text-red-700" type="submit">
+                                            <i class="bi bi-trash3"></i>Arcive
+                                        </button>
+                                    </form>
+                                </div>
+                            @endif
+                        </td>
+                    </tr>
+                @empty
+                    <tr>
+                        <td colspan="5" class="px-6 py-4 text-center text-gray-500">
+                            No job applications found.
+                        </td>
+                    </tr>
+                @endforelse
+            </tbody>
+        </table>
+
+        {{-- Pagination --}}
+        <div class="mt-3">
+            {{ $jobApplications->links() }}
         </div>
     </div>
+
 </x-app-layout>

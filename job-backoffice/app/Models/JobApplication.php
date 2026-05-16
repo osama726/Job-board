@@ -44,4 +44,7 @@ class JobApplication extends Model
     public function jobVacancy() {
         return $this->belongsTo(JobVacancy::class, 'jobVacancy_id', 'id');
     }
+    public function company() {
+        return $this->hasOneThrough(Company::class, JobVacancy::class, 'id', 'id', 'jobVacancy_id', 'company_id');
+    }
 }
