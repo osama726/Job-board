@@ -69,7 +69,7 @@ class JobApplicationController extends Controller
     public function restore(JobApplication $jobApplication)
     {
         $jobApplication->restore();
-        return to_route('job-applications.index', ['archived' => true])->with('success', 'Job application restored successfully.');
+        return to_route('job-applications.index')->with('success', 'Job application restored successfully.');
     }
 
     /**

@@ -50,7 +50,14 @@ Route::middleware('auth')->group(function () {
     ->name('job-applications.force-delete')
     ->withTrashed();
 
+    // Job Users routes
     Route::resource('/users', UserController::class);
+    Route::put('/users/{user}/restore', [UserController::class, 'restore'])
+    ->name('users.restore')
+    ->withTrashed();
+    Route::delete('/users/{user}/force-delete', [UserController::class, 'forceDelete'])
+    ->name('users.force-delete')
+    ->withTrashed();
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
