@@ -25,15 +25,6 @@ class UserController extends Controller
         return view('user.index', compact('users'));
     }
 
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(User $user)
-    {
-        //
-    }
-
     /**
      * Show the form for editing the specified resource.
     */
