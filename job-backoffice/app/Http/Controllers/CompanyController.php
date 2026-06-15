@@ -29,6 +29,11 @@ class CompanyController extends Controller
         'Hospitality',
     ];
 
+    // Helper function to get the company based on the user's role
+    private function getCompany(Company $Company = null){
+        return $Company ?? Company::where('owner_id', auth()->id())->first();
+    }
+
     public function index(Request $request)
     {
         $query = Company::latest();
@@ -81,25 +86,31 @@ class CompanyController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Company $Company)
+    public function show(Company $Company = null)
     {
+        $Company = $this->getCompany($Company);
+
         return view('company.show', ['company' => $Company]);
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Company $Company)
+    public function edit(Company $Company = null)
     {
+        $Company = $this->getCompany($Company);
+
         return view('company.edit', ['company' => $Company, 'industries' => $this->industries]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(CompanyUpdateRequest $request, Company $Company)
+    public function update(CompanyUpdateRequest $request, Company $Company = null)
     {
         $validated = $request->validated();
+
+        $Company = $this->getCompany($Company);
 
         $Company->update($validated);
 
@@ -116,12 +127,17 @@ class CompanyController extends Controller
 
         $Company->owner->update($ownerData);
 
-        // Check the value of toList query parameter to determine where to redirect
-        if($request->input('toList') == false){
-            return to_route('companies.show', $Company->id)->with('success', 'Company updated successfully.');
-        }
+        if (auth()->user()->role == 'admin')
+        {
+            // Check the value of toList query parameter to determine where to redirect
+            if($request->input('toList') == false){
+                return to_route('companies.show', $Company->id)->with('success', 'Company updated successfully.');
+            }
 
-        return to_route('companies.index')->with('success', 'Company updated successfully.');
+            return to_route('companies.index')->with('success', 'Company updated successfully.');
+        }
+        else
+            return to_route('my-company.show')->with('success', 'Company updated successfully.');
     }
 
     /**

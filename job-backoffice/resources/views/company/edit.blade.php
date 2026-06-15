@@ -1,3 +1,10 @@
+@php
+    if (auth()->user()->role == 'admin')
+        $formAction = route('companies.update', $company->id);
+    else if (auth()->user()->role == 'company-owner')
+        $formAction = route('my-company.update');
+@endphp
+
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
@@ -7,14 +14,14 @@
 
         {{-- Success and error messages --}}
     <x-toast-notification/>
-    <div class="max-w-2xl mx-auto mt-10 bg-white shadow-md rounded-xl p-8">
+    <div class="max-w-2xl mx-auto bg-white shadow-md rounded-xl p-8">
         <div>
             <p class="text-2xl font-bold text-gray-800">
                 Here you can edit in your company ({{ $company->name }})
             </p>
         </div>
 
-        <form action="{{ route('companies.update', $company->id) }}" method="POST" class="space-y-6">
+        <form action="{{ $formAction }}" method="POST" class="space-y-6">
             @csrf
             @method('PUT')
 
@@ -180,13 +187,21 @@
 
             {{-- Action buttons --}}
             <div class="flex justify-end items-center gap-3">
-                <a
-                    href="{{ route('companies.index') }}"
-                    class="text-sm text-gray-600 hover:text-gray-900 py-2 px-4"
-                >
-                    Cancel
-                </a>
-
+                @if (auth()->user()->role == 'admin')
+                    <a
+                        href="{{ route('companies.index') }}"
+                        class="text-sm text-gray-600 hover:text-gray-900 py-2 px-4"
+                    >
+                        Cancel
+                    </a>
+                @else
+                    <a
+                        href="{{ route('my-company.show') }}"
+                        class="text-sm text-gray-600 hover:text-gray-900 py-2 px-4"
+                    >
+                        Cancel
+                    </a>
+                @endif
                 <button
                     type="submit"
                     class="inline-flex items-center gap-2 rounded-lg bg-indigo-600 px-5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-700 transition"

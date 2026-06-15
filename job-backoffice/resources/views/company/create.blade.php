@@ -7,7 +7,7 @@
 
         {{-- Success and error messages --}}
     <x-toast-notification/>
-    <div class="max-w-2xl mx-auto mt-10 bg-white shadow-md rounded-xl p-8">
+    <div class="max-w-2xl mx-auto bg-white shadow-md rounded-xl p-8">
         <div>
             <p class="text-2xl font-bold text-gray-800">
                 Create a new company for your platform.

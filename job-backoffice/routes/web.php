@@ -10,27 +10,8 @@ use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth', 'role:admin,company-owner'])->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
-
-    // Job Categories routes
-    Route::resource('/job-categories', JobCategoryController::class)
-    ->except('show');
-    Route::put('/job-categories/{job_category}/restore', [JobCategoryController::class, 'restore'])
-    ->name('job-categories.restore')
-    ->withTrashed();
-    Route::delete('/job-categories/{job_category}/force-delete', [JobCategoryController::class, 'forceDelete'])
-    ->name('job-categories.force-delete')
-    ->withTrashed();
-
-    // Job Companies routes
-    Route::resource('/companies', CompanyController::class);
-    Route::put('/companies/{company}/restore', [CompanyController::class, 'restore'])
-    ->name('companies.restore')
-    ->withTrashed();
-    Route::delete('/companies/{company}/force-delete', [CompanyController::class, 'forceDelete'])
-    ->name('companies.force-delete')
-    ->withTrashed();
 
     // Job jobVacancies routes
     Route::resource('/job-vacancies', JobVacancyController::class);
@@ -50,6 +31,23 @@ Route::middleware('auth')->group(function () {
     ->name('job-applications.force-delete')
     ->withTrashed();
 
+    // Profile routes
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+});
+
+// Company owners
+Route::middleware(['auth', 'role:company-owner'])->group(function () {
+    // Companies routes
+    Route::get('/my-company', [CompanyController::class, 'show'])->name('my-company.show');
+    Route::get('/my-company/edit', [CompanyController::class, 'edit'])->name('my-company.edit');
+    Route::put('/my-company', [CompanyController::class, 'update'])->name('my-company.update');
+});
+
+// Admin
+Route::middleware(['auth', 'role:admin'])->group(function () {
     // Job Users routes
     Route::resource('/users', UserController::class);
     Route::put('/users/{user}/restore', [UserController::class, 'restore'])
@@ -59,9 +57,24 @@ Route::middleware('auth')->group(function () {
     ->name('users.force-delete')
     ->withTrashed();
 
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    // Companies routes
+    Route::resource('/companies', CompanyController::class);
+    Route::put('/companies/{company}/restore', [CompanyController::class, 'restore'])
+    ->name('companies.restore')
+    ->withTrashed();
+    Route::delete('/companies/{company}/force-delete', [CompanyController::class, 'forceDelete'])
+    ->name('companies.force-delete')
+    ->withTrashed();
+
+    // Job Categories routes
+    Route::resource('/job-categories', JobCategoryController::class)
+    ->except('show');
+    Route::put('/job-categories/{job_category}/restore', [JobCategoryController::class, 'restore'])
+    ->name('job-categories.restore')
+    ->withTrashed();
+    Route::delete('/job-categories/{job_category}/force-delete', [JobCategoryController::class, 'forceDelete'])
+    ->name('job-categories.force-delete')
+    ->withTrashed();
 });
 
 require __DIR__.'/auth.php';

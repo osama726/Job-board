@@ -5,7 +5,7 @@
         </h2>
     </x-slot>
 
-    <div class="py-10 px-4 sm:px-6 lg:px-8 bg-gray-50 min-h-screen">
+    <div class="mt-2 py-10 px-4 sm:px-6 lg:px-8 bg-gray-50 min-h-screen">
         {{-- Overview Cards --}}
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
             {{-- Total Users Card --}}

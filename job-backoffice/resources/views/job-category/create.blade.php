@@ -5,7 +5,7 @@
         </h2>
     </x-slot>
 
-    <div class="max-w-2xl mx-auto mt-10 bg-white shadow-md rounded-xl p-8">
+    <div class="max-w-2xl mx-auto mt-12 bg-white shadow-md rounded-xl p-8">
 
         <div>
             <p class="text-2xl font-bold text-gray-800">
